@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Classification Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .logout-button {
+            background-color: white;
+            color: #4CAF50;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #e7e7e7;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .classification-report {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            white-space: pre-wrap; /* Preserve whitespace for the report */
+            text-align: left; /* Align text to the left */
+            margin: 20px auto;
+            max-width: 800px; /* Limit the width */
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+
+        .image-container {
+            width: 100%; /* Full width */
+            height: 400px; /* Adjust height based on your image size */
+            overflow: hidden; /* Hide overflow */
+            position: relative; /* Positioning context */
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0; /* Position the image at the top */
+            left: 0; /* Align to the left */
+            width: 100%; /* Full width */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Classification Report</h1>
+        <a href="/logout" class="logout-button">Logout</a>
+    </header>
+    <main>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='classification_report.png') }}" alt="Classification Report">
+        </div>
+        <br>
+        <a href="/index" class="back-button">Back to Home</a>
+    </main>
+</body>
+</html>

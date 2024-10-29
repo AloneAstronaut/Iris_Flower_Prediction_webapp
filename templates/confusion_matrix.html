@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confusion Matrix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .logout-button {
+            background-color: white;
+            color: #4CAF50;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #e7e7e7;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .confusion-matrix-img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Confusion Matrix</h1>
+        <a href="/logout" class="logout-button">Logout</a>
+    </header>
+    <main>
+        <img src="{{ url_for('static', filename='confusion_matrix.png') }}" alt="Confusion Matrix" class="confusion-matrix-img">
+        <br>
+        <a href="/index" class="back-button">Back to Home</a>
+    </main>
+</body>
+</html>

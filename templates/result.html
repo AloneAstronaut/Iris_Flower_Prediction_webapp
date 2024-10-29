@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> -->
+     <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #e9f5ff;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+h1:nth-of-type(2) {
+    color: #d32f2f;
+    font-size: 2.2em;
+    margin-top: 10px;
+}
+
+a {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 20px auto;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease;
+}
+
+a:hover {
+    background-color:#4CAF50;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    a {
+        font-size: 1em;
+        padding: 8px 15px;
+    }
+}
+
+     </style>
+
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    <h1>Predicted Species: {{ prediction }}</h1>
+    <a href="/predict">Make another prediction</a>
+</body>
+</html>

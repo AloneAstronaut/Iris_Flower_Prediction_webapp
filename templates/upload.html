@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Dataset</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Styles for the dataset preview container */
+        #dataset-preview {
+            max-height: 300px; /* Set a maximum height */
+            overflow-y: auto;  /* Enable vertical scrolling */
+            border: 1px solid #ddd; /* Optional border */
+            padding: 10px; /* Optional padding */
+            background-color: #f9f9f9; /* Optional background color */
+        }
+        /* Add this CSS to your stylesheet or in a <style> tag in the <head> */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+.container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 50px;
+}
+
+h2, h3 {
+    color: #4CAF50;
+    text-align: center;
+}
+
+hr {
+    border-top: 1px solid #4CAF50;
+    margin: 20px 0;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.btn {
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #388E3C; /* Darker shade */
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: #4CAF50;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #388E3C; /* Darker shade */
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #4CAF50;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+#dataset-preview {
+    background: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.table th, .table td {
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e9ecef;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Upload Dataset</h2>
+        <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="dataset">Choose CSV file:</label>
+                <input type="file" class="form-control" id="dataset" name="dataset" accept=".csv" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="upload-button">Upload</button>
+        </form>
+
+        <hr>
+
+        <h3>Preview Dataset</h3>
+        <div id="dataset-preview" class="mt-3">
+            <p>No dataset uploaded yet.</p>
+        </div>
+
+        <hr>
+
+        <div class="mt-3">
+            <button id="train-model" class="btn btn-success" style="display:none;" onclick="trainModel()">Train Model</button>
+            <a id="go-to-index" href="{{ url_for('index') }}" class="btn btn-secondary" style="display:none; margin-left: 10px;">Go to Index</a>
+        </div>
+
+        <script>
+            // Clear file input value on page load
+            window.onload = function() {
+                document.getElementById('dataset').value = ''; // Clear the file input
+            };
+
+            document.getElementById('upload-button').addEventListener('click', function() {
+                const fileInput = document.getElementById('dataset');
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const contents = e.target.result;
+                        const lines = contents.split('\n').filter(line => line.trim() !== ''); // Filter out empty lines
+                        if (lines.length > 0) {
+                            let previewHtml = '<table class="table"><thead><tr>';
+                            const headers = lines[0].split(',');
+                            headers.forEach(header => {
+                                previewHtml += `<th>${header.trim()}</th>`;
+                            });
+                            previewHtml += '</tr></thead><tbody>';
+                            for (let i = 1; i < lines.length; i++) { // Start from 1 to skip header
+                                const cols = lines[i].split(',');
+                                previewHtml += '<tr>';
+                                cols.forEach(col => {
+                                    previewHtml += `<td>${col.trim()}</td>`;
+                                });
+                                previewHtml += '</tr>';
+                            }
+                            previewHtml += '</tbody></table>';
+                            document.getElementById('dataset-preview').innerHTML = previewHtml;
+                            document.getElementById('train-model').style.display = 'block'; // Show train model button
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            function trainModel() {
+                const formData = new FormData(document.getElementById('upload-form'));
+                fetch("{{ url_for('upload') }}", {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                  .then(data => {
+                      alert(data.message);
+                      if (data.success) {
+                          document.getElementById('train-model').style.display = 'none'; // Hide button after training
+                          document.getElementById('go-to-index').style.display = 'inline-block'; // Show Go to Index button
+                      }
+                  });
+            }
+        </script>
+    </div>
+</body>
+</html>
